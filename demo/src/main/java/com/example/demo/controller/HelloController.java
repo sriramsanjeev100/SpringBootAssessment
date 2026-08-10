@@ -1,32 +1,15 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.Hello;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api")
 public class HelloController
 {
-    @GetMapping("/hello")
-    public String getHello()
-    {
-        return "Hello World - GET";
-    }
-
     @PostMapping("/hello")
-    public String postHello()
+    public String postHello(@RequestBody Hello hello)
     {
-        return "Hello World - POST";
-    }
-
-    @PutMapping("/hello")
-    public String putHello()
-    {
-        return "Hello World - PUT";
-    }
-
-    @DeleteMapping("/hello")
-    public String deleteHello()
-    {
-        return "Hello World - DELETE";
+        return "Hi! I am " + hello.name() + ". My age is " + hello.age();
     }
 }

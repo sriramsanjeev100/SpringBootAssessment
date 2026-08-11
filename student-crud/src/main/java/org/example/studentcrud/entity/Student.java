@@ -1,6 +1,13 @@
 package org.example.studentcrud.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Id;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Table;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.JoinColumn;
 
 @Entity
 @Table(name = "students")
@@ -12,6 +19,10 @@ public class Student
     private String name;
     private String email;
     private String course;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "profile_id")
+    private StudentProfile profile;
 
     public Student()
     {
@@ -64,5 +75,15 @@ public class Student
     public void setCourse(String course)
     {
         this.course = course;
+    }
+
+    public StudentProfile getProfile()
+    {
+        return profile;
+    }
+
+    public void setProfile(StudentProfile profile)
+    {
+        this.profile = profile;
     }
 }

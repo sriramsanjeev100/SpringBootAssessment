@@ -2,6 +2,7 @@ package org.example.studentcrud.service;
 
 import org.example.studentcrud.dto.StudentDto;
 import org.example.studentcrud.entity.Student;
+import org.example.studentcrud.entity.StudentProfile;
 import org.example.studentcrud.repository.StudentRepository;
 import org.springframework.stereotype.Service;
 
@@ -17,13 +18,20 @@ public class StudentService {
     }
 
     // CREATE
-    public Student addStudent(StudentDto student)
+    public Student addStudent(StudentDto studentDto)
     {
-        Student newStudent = new Student();
-        newStudent.setName(student.name());
-        newStudent.setEmail(student.email());
-        newStudent.setCourse(student.course());
-        return studentRepository.save(newStudent);
+        Student student = new Student();
+        student.setName(studentDto.name());
+        student.setEmail(studentDto.email());
+        student.setCourse(studentDto.course());
+
+        StudentProfile profile = new StudentProfile();
+        profile.setPhone(studentDto.profile().phone());
+        profile.setAddress(studentDto.profile().address());
+        profile.setDateOfBirth(studentDto.profile().dateOfBirth());
+
+        student.setProfile(profile);
+        return studentRepository.save(student);
     }
 
     // READ ALL

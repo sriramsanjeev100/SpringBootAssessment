@@ -18,9 +18,6 @@ public class StudentProfile
     private String address;
     private String dateOfBirth;
 
-    @OneToOne(mappedBy = "profile")
-    private Student student;
-
     public StudentProfile()
     {
 
@@ -72,15 +69,5 @@ public class StudentProfile
     public void setDateOfBirth(String dateOfBirth)
     {
         this.dateOfBirth = dateOfBirth;
-    }
-
-    public Student getStudent()
-    {
-        return student;
-    }
-
-    public void setStudent(Student student)
-    {
-        this.student = student;
     }
 }

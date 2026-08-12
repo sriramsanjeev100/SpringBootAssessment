@@ -1,5 +1,6 @@
 package org.example.studentcourse.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Id;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
@@ -18,6 +19,7 @@ public class Course
     private String courseName;
 
     @OneToMany(mappedBy = "course")
+    @JsonIgnore
     private List<Student> students = new ArrayList<>();
 
     public Course()

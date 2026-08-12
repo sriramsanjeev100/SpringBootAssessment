@@ -48,4 +48,11 @@ public class StudentService
     {
         studentRepository.deleteById(id);
     }
+
+    public List<Student> getStudentsByCourse(int courseId)
+    {
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new RuntimeException("Course not found"));
+        return studentRepository.findByCourse(course);
+    }
 }

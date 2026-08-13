@@ -1,6 +1,8 @@
 package org.example.studentcourse.dto;
 
-public record CourseRequestDto(String courseName)
+import java.util.List;
+
+public record CourseRequestDto(String courseName, List<String> skills)
 {
 
 }

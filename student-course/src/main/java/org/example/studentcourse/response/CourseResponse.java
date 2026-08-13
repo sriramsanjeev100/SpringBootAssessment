@@ -1,6 +1,8 @@
 package org.example.studentcourse.response;
 
-public record CourseResponse(int id, String courseName)
+import java.util.List;
+
+public record CourseResponse(int id, String courseName, List<SkillResponse> skills)
 {
 
 }

@@ -1,10 +1,15 @@
 package org.example.studentcourse.controller;
 
 import org.example.studentcourse.dto.CourseRequestDto;
-import org.example.studentcourse.entity.Course;
+import org.example.studentcourse.response.CourseResponse;
 import org.example.studentcourse.service.CourseService;
-import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import java.util.List;
 
 @RestController
@@ -18,19 +23,19 @@ public class CourseController
     }
 
     @PostMapping
-    public Course addCourse(@RequestBody CourseRequestDto dto)
+    public CourseResponse addCourse(@RequestBody CourseRequestDto dto)
     {
         return courseService.addCourse(dto);
     }
 
     @GetMapping
-    public List<Course> getAllCourses()
+    public List<CourseResponse> getAllCourses()
     {
         return courseService.getAllCourses();
     }
 
     @GetMapping("/{id}")
-    public Course getCourseById(@PathVariable int id)
+    public CourseResponse getCourseById(@PathVariable int id)
     {
         return courseService.getCourseById(id);
     }

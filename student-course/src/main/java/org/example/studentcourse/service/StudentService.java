@@ -5,6 +5,8 @@ import org.example.studentcourse.entity.Course;
 import org.example.studentcourse.entity.Student;
 import org.example.studentcourse.repository.CourseRepository;
 import org.example.studentcourse.repository.StudentRepository;
+import org.example.studentcourse.response.StudentCourseResponse;
+import org.example.studentcourse.response.StudentResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,7 +23,7 @@ public class StudentService
         this.courseRepository = courseRepository;
     }
 
-    public Student addStudent(StudentRequestDto dto)
+    public StudentResponse addStudent(StudentRequestDto dto)
     {
         Course course = courseRepository.findById(dto.courseId())
                 .orElseThrow(() -> new RuntimeException("Course not found"));
@@ -30,18 +32,34 @@ public class StudentService
         student.setName(dto.name());
         student.setEmail(dto.email());
         student.setCourse(course);
-        return studentRepository.save(student);
+        Student savedStudent = studentRepository.save(student);
+        return mapToResponse(savedStudent);
     }
 
-    public List<Student> getAllStudents()
+    public List<StudentResponse> getAllStudents()
     {
-        return studentRepository.findAll();
+        return studentRepository.findAll().stream()
+                .map(this::mapToResponse)
+                .toList();
     }
 
-    public Student getStudentById(int id)
+    public StudentResponse getStudentById(int id)
     {
-        return studentRepository.findById(id)
+        Student student = studentRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Student not found"));
+        return mapToResponse(student);
+    }
+
+    public StudentCourseResponse getStudentsByCourse(int courseId)
+    {
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new RuntimeException("Course not found"));
+
+        List<StudentResponse> students = studentRepository.findByCourse(course).stream()
+                        .map(this::mapToResponse)
+                        .toList();
+
+        return new StudentCourseResponse(course.getId(), course.getCourseName(), students);
     }
 
     public void deleteStudent(int id)
@@ -49,10 +67,8 @@ public class StudentService
         studentRepository.deleteById(id);
     }
 
-    public List<Student> getStudentsByCourse(int courseId)
+    private StudentResponse mapToResponse(Student student)
     {
-        Course course = courseRepository.findById(courseId)
-                .orElseThrow(() -> new RuntimeException("Course not found"));
-        return studentRepository.findByCourse(course);
+        return new StudentResponse(student.getId(), student.getName(), student.getEmail());
     }
 }

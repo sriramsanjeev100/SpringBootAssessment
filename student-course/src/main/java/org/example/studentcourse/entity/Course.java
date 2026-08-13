@@ -1,11 +1,6 @@
 package org.example.studentcourse.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.Id;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +14,6 @@ public class Course
     private String courseName;
 
     @OneToMany(mappedBy = "course")
-    @JsonIgnore
     private List<Student> students = new ArrayList<>();
 
     public Course()

@@ -1,8 +1,11 @@
 package org.example.studentcourse.controller;
 
+import jakarta.validation.Valid;
 import org.example.studentcourse.dto.request.BatchRequestDto;
 import org.example.studentcourse.dto.response.BatchResponse;
 import org.example.studentcourse.service.BatchService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,27 +27,30 @@ public class BatchController
     }
 
     @PostMapping
-    public BatchResponse addBatch(@RequestBody BatchRequestDto dto)
+    public ResponseEntity<BatchResponse> addBatch(@Valid @RequestBody BatchRequestDto dto)
     {
-        return batchService.addBatch(dto);
+        BatchResponse response = batchService.addBatch(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).header("X-Message", "Batch created").body(response);
     }
 
     @GetMapping
-    public List<BatchResponse> getAllBatches()
+    public ResponseEntity<List<BatchResponse>> getAllBatches()
     {
-        return batchService.getAllBatches();
+        List<BatchResponse> response = batchService.getAllBatches();
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}")
-    public BatchResponse getBatchById(@PathVariable int id)
+    public ResponseEntity<BatchResponse> getBatchById(@PathVariable int id)
     {
-        return batchService.getBatchById(id);
+        BatchResponse response = batchService.getBatchById(id);
+        return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/{id}")
-    public String deleteBatch(@PathVariable int id)
+    public ResponseEntity<String> deleteBatch(@PathVariable int id)
     {
         batchService.deleteBatch(id);
-        return "Batch deleted successfully";
+        return ResponseEntity.ok("Batch deleted successfully");
     }
 }

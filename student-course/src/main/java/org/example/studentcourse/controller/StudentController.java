@@ -28,35 +28,37 @@ public class StudentController
     }
 
     @PostMapping
-    public ResponseEntity<StudentResponse> addStudent(
-            @Valid @RequestBody StudentRequestDto dto)
+    public ResponseEntity<StudentResponse> addStudent(@Valid @RequestBody StudentRequestDto dto)
     {
         StudentResponse response = studentService.addStudent(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping
-    public List<StudentResponse> getAllStudents()
+    public ResponseEntity<List<StudentResponse>> getAllStudents()
     {
-        return studentService.getAllStudents();
+        List<StudentResponse> response = studentService.getAllStudents();
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}")
-    public StudentResponse getStudentById(@PathVariable int id)
+    public ResponseEntity<StudentResponse> getStudentById(@PathVariable int id)
     {
-        return studentService.getStudentById(id);
+        StudentResponse response = studentService.getStudentById(id);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/course/{courseId}")
-    public StudentCourseResponse getStudentsByCourse(@PathVariable int courseId)
+    public ResponseEntity<StudentCourseResponse> getStudentsByCourse(@PathVariable int courseId)
     {
-        return studentService.getStudentsByCourse(courseId);
+        StudentCourseResponse response = studentService.getStudentsByCourse(courseId);
+        return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/{id}")
-    public String deleteStudent(@PathVariable int id)
+    public ResponseEntity<String> deleteStudent(@PathVariable int id)
     {
         studentService.deleteStudent(id);
-        return "Student deleted successfully";
+        return ResponseEntity.ok("Student deleted successfully");
     }
 }

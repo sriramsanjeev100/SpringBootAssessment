@@ -7,7 +7,6 @@ import org.example.studentcourse.entity.Course;
 import org.example.studentcourse.repository.BatchRepository;
 import org.example.studentcourse.repository.CourseRepository;
 import org.example.studentcourse.dto.response.BatchResponse;
-import org.example.studentcourse.dto.response.CourseResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

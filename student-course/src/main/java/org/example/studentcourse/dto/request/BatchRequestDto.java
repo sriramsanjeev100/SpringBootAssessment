@@ -1,13 +1,16 @@
 package org.example.studentcourse.dto.request;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import org.example.studentcourse.validation.ValidDateRange;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+@ValidDateRange
 public record BatchRequestDto(
 
         @NotBlank(message = "Batch name is required")

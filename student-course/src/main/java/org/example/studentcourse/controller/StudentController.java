@@ -1,9 +1,12 @@
 package org.example.studentcourse.controller;
 
+import jakarta.validation.Valid;
 import org.example.studentcourse.dto.request.StudentRequestDto;
 import org.example.studentcourse.dto.response.StudentCourseResponse;
 import org.example.studentcourse.dto.response.StudentResponse;
 import org.example.studentcourse.service.StudentService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,9 +28,11 @@ public class StudentController
     }
 
     @PostMapping
-    public StudentResponse addStudent(@RequestBody StudentRequestDto dto)
+    public ResponseEntity<StudentResponse> addStudent(
+            @Valid @RequestBody StudentRequestDto dto)
     {
-        return studentService.addStudent(dto);
+        StudentResponse response = studentService.addStudent(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping

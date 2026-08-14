@@ -1,15 +1,14 @@
 package org.example.studentcourse.controller;
 
+import jakarta.validation.Valid;
+
 import org.example.studentcourse.dto.request.CourseRequestDto;
 import org.example.studentcourse.dto.response.CourseResponse;
 import org.example.studentcourse.service.CourseService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,27 +23,31 @@ public class CourseController
     }
 
     @PostMapping
-    public CourseResponse addCourse(@RequestBody CourseRequestDto dto)
+    public ResponseEntity<CourseResponse> addCourse(
+            @Valid @RequestBody CourseRequestDto dto)
     {
-        return courseService.addCourse(dto);
+        CourseResponse response = courseService.addCourse(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping
-    public List<CourseResponse> getAllCourses()
+    public ResponseEntity<List<CourseResponse>> getAllCourses()
     {
-        return courseService.getAllCourses();
+        List<CourseResponse> response = courseService.getAllCourses();
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}")
-    public CourseResponse getCourseById(@PathVariable int id)
+    public ResponseEntity<CourseResponse> getCourseById(@PathVariable int id)
     {
-        return courseService.getCourseById(id);
+        CourseResponse response = courseService.getCourseById(id);
+        return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/{id}")
-    public String deleteCourse(@PathVariable int id)
+    public ResponseEntity<String> deleteCourse(@PathVariable int id)
     {
         courseService.deleteCourse(id);
-        return "Course deleted successfully";
+        return ResponseEntity.ok("Course deleted successfully");
     }
 }

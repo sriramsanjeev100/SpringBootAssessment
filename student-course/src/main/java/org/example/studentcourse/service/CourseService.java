@@ -1,12 +1,12 @@
 package org.example.studentcourse.service;
 
-import org.example.studentcourse.dto.CourseRequestDto;
+import org.example.studentcourse.dto.request.CourseRequestDto;
 import org.example.studentcourse.entity.Course;
 import org.example.studentcourse.entity.Skill;
 import org.example.studentcourse.repository.CourseRepository;
 import org.example.studentcourse.repository.SkillRepository;
-import org.example.studentcourse.response.CourseResponse;
-import org.example.studentcourse.response.SkillResponse;
+import org.example.studentcourse.dto.response.CourseResponse;
+import org.example.studentcourse.dto.response.SkillResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

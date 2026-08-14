@@ -1,7 +1,7 @@
 package org.example.studentcourse.controller;
 
-import org.example.studentcourse.dto.CourseRequestDto;
-import org.example.studentcourse.response.CourseResponse;
+import org.example.studentcourse.dto.request.CourseRequestDto;
+import org.example.studentcourse.dto.response.CourseResponse;
 import org.example.studentcourse.service.CourseService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

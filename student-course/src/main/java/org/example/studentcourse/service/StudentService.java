@@ -1,12 +1,12 @@
 package org.example.studentcourse.service;
 
-import org.example.studentcourse.dto.StudentRequestDto;
+import org.example.studentcourse.dto.request.StudentRequestDto;
 import org.example.studentcourse.entity.Course;
 import org.example.studentcourse.entity.Student;
 import org.example.studentcourse.repository.CourseRepository;
 import org.example.studentcourse.repository.StudentRepository;
-import org.example.studentcourse.response.StudentCourseResponse;
-import org.example.studentcourse.response.StudentResponse;
+import org.example.studentcourse.dto.response.StudentCourseResponse;
+import org.example.studentcourse.dto.response.StudentResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

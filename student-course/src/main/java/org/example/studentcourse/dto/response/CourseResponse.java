@@ -1,4 +1,4 @@
-package org.example.studentcourse.response;
+package org.example.studentcourse.dto.response;
 
 import java.util.List;
 

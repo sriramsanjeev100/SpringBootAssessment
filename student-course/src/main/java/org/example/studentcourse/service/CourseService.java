@@ -3,6 +3,7 @@ package org.example.studentcourse.service;
 import org.example.studentcourse.dto.request.CourseRequestDto;
 import org.example.studentcourse.entity.Course;
 import org.example.studentcourse.entity.Skill;
+import org.example.studentcourse.exception.CourseNotFoundException;
 import org.example.studentcourse.repository.CourseRepository;
 import org.example.studentcourse.repository.SkillRepository;
 import org.example.studentcourse.dto.response.CourseResponse;
@@ -55,16 +56,20 @@ public class CourseService
     public CourseResponse getCourseById(int id)
     {
         Course course = courseRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Course not found"));
+                .orElseThrow(() -> new CourseNotFoundException("Course not found with id: " + id));
         return mapToResponse(course);
     }
 
     public void deleteCourse(int id)
     {
+        if (!courseRepository.existsById(id))
+        {
+            throw new CourseNotFoundException("Course not found with id: " + id);
+        }
+
         courseRepository.deleteById(id);
     }
 
-    // ENTITY → RESPONSE
     private CourseResponse mapToResponse(Course course) {
 
         List<SkillResponse> skillResponses = course.getSkills().stream()

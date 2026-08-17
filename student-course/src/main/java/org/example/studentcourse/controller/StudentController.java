@@ -1,5 +1,7 @@
 package org.example.studentcourse.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.Valid;
 import org.example.studentcourse.dto.request.StudentRequestDto;
 import org.example.studentcourse.dto.response.StudentCourseResponse;
@@ -28,6 +30,10 @@ public class StudentController
     }
 
     @PostMapping
+    @Operation(
+            summary = "Create a New Student",
+            description = "Creates a Student and Adds them to a Course"
+    )
     public ResponseEntity<StudentResponse> addStudent(@Valid @RequestBody StudentRequestDto dto)
     {
         StudentResponse response = studentService.addStudent(dto);
@@ -42,21 +48,33 @@ public class StudentController
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<StudentResponse> getStudentById(@PathVariable int id)
+    @Operation(
+            summary = "Get Student by ID",
+            description = "Returns Student Details for the Given Student ID"
+    )
+    public ResponseEntity<StudentResponse> getStudentById(@Parameter(description = "Student ID")@PathVariable int id)
     {
         StudentResponse response = studentService.getStudentById(id);
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/course/{courseId}")
-    public ResponseEntity<StudentCourseResponse> getStudentsByCourse(@PathVariable int courseId)
+    @Operation(
+            summary = "Get Students by Course",
+            description = "Returns all Students who joined in the Given Course"
+    )
+    public ResponseEntity<StudentCourseResponse> getStudentsByCourse(@Parameter(description = "Course ID")@PathVariable int courseId)
     {
         StudentCourseResponse response = studentService.getStudentsByCourse(courseId);
         return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteStudent(@PathVariable int id)
+    @Operation(
+            summary = "Delete Student",
+            description = "Deletes a Student using the Student ID"
+    )
+    public ResponseEntity<String> deleteStudent(@Parameter(description = "Student ID")@PathVariable int id)
     {
         studentService.deleteStudent(id);
         return ResponseEntity.ok("Student deleted successfully");

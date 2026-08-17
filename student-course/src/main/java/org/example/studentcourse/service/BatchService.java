@@ -4,6 +4,8 @@ import org.example.studentcourse.dto.request.BatchRequestDto;
 import org.example.studentcourse.dto.response.BatchCourseResponse;
 import org.example.studentcourse.entity.Batch;
 import org.example.studentcourse.entity.Course;
+import org.example.studentcourse.exception.BatchNotFoundException;
+import org.example.studentcourse.exception.CourseNotFoundException;
 import org.example.studentcourse.repository.BatchRepository;
 import org.example.studentcourse.repository.CourseRepository;
 import org.example.studentcourse.dto.response.BatchResponse;
@@ -26,7 +28,7 @@ public class BatchService
     public BatchResponse addBatch(BatchRequestDto dto)
     {
         Course course = courseRepository.findById(dto.courseId())
-                .orElseThrow(() -> new RuntimeException("Course not found"));
+                .orElseThrow(() -> new CourseNotFoundException("Course not found with id: " + dto.courseId()));
 
         Batch batch = new Batch();
         batch.setBatchName(dto.batchName());
@@ -50,13 +52,17 @@ public class BatchService
     public BatchResponse getBatchById(int id)
     {
         Batch batch = batchRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Batch not found"));
+                .orElseThrow(() -> new BatchNotFoundException("Batch not found with id: " + id));
 
         return mapToResponse(batch);
     }
 
     public void deleteBatch(int id)
     {
+        if (!batchRepository.existsById(id))
+        {
+            throw new BatchNotFoundException("Batch not found with id: " + id);
+        }
         batchRepository.deleteById(id);
     }
 

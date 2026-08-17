@@ -1,5 +1,7 @@
 package org.example.studentcourse.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.Valid;
 import org.example.studentcourse.dto.request.BatchRequestDto;
 import org.example.studentcourse.dto.response.BatchResponse;
@@ -27,6 +29,10 @@ public class BatchController
     }
 
     @PostMapping
+    @Operation(
+            summary = "Create a New Batch",
+            description = "Creates a New Batch for Students to Join"
+    )
     public ResponseEntity<BatchResponse> addBatch(@Valid @RequestBody BatchRequestDto dto)
     {
         BatchResponse response = batchService.addBatch(dto);
@@ -34,6 +40,10 @@ public class BatchController
     }
 
     @GetMapping
+    @Operation(
+            summary = "Gets All Batches",
+            description = "Returns All Available Batches"
+    )
     public ResponseEntity<List<BatchResponse>> getAllBatches()
     {
         List<BatchResponse> response = batchService.getAllBatches();
@@ -41,14 +51,22 @@ public class BatchController
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<BatchResponse> getBatchById(@PathVariable int id)
+    @Operation(
+            summary = "Get Batch by ID",
+            description = "Returns Batch Details for the Given Batch ID"
+    )
+    public ResponseEntity<BatchResponse> getBatchById(@Parameter(description = "Batch ID")@PathVariable int id)
     {
         BatchResponse response = batchService.getBatchById(id);
         return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteBatch(@PathVariable int id)
+    @Operation(
+            summary = "Delete Batch",
+            description = "Deletes a Student using the Batch ID"
+    )
+    public ResponseEntity<String> deleteBatch(@Parameter(description = "Batch ID")@PathVariable int id)
     {
         batchService.deleteBatch(id);
         return ResponseEntity.ok("Batch deleted successfully");

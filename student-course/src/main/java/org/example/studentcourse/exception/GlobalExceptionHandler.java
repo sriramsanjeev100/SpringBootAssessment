@@ -26,6 +26,15 @@ public class GlobalExceptionHandler
                 .map(err -> Map.of("field", err.getField(), "message", err.getDefaultMessage()))
                 .toList());
 
+        ex.getBindingResult()
+                .getGlobalErrors()
+                .forEach(error ->
+                        errors.put(
+                                "dateRange",
+                                error.getDefaultMessage()
+                        )
+                );
+
         return ResponseEntity.badRequest().body(errors);
     }
 
@@ -36,9 +45,9 @@ public class GlobalExceptionHandler
         errors.put("timestamp", LocalDateTime.now());
         errors.put("status", HttpStatus.BAD_REQUEST.value());
         errors.put("errors", ex.getConstraintViolations()
-                        .stream()
-                        .map(v -> Map.of("field", v.getPropertyPath().toString(), "message", v.getMessage()))
-                        .toList());
+                .stream()
+                .map(v -> Map.of("field", v.getPropertyPath().toString(), "message", v.getMessage()))
+                .toList());
 
         return ResponseEntity.badRequest().body(errors);
     }

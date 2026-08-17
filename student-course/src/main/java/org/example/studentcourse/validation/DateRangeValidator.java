@@ -11,13 +11,24 @@ public class DateRangeValidator implements ConstraintValidator<ValidDateRange, B
     {
         if (dto == null)
         {
+            System.out.println("DTO is null");
             return true;
         }
         if (dto.startDate() == null || dto.endDate() == null)
         {
+            System.out.println("Start Date/End Date is null");
             return true;
         }
 
-        return dto.endDate().isAfter(dto.startDate());
+        System.out.println("Start Date: " + dto.startDate());
+        System.out.println("End Date: " + dto.endDate());
+
+        if (dto.endDate().isAfter(dto.startDate()))
+        {
+            System.out.println("Date is Valid");
+            return true;
+        }
+        System.out.println("Date is not Valid");
+        return false;
     }
 }

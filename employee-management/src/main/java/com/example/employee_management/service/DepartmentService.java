@@ -1,6 +1,8 @@
 package com.example.employee_management.service;
 
+import com.example.employee_management.dto.response.DepartmentEmployeeResponse;
 import com.example.employee_management.entity.Department;
+import com.example.employee_management.entity.Employee;
 import com.example.employee_management.repository.DepartmentRepository;
 import org.springframework.stereotype.Service;
 
@@ -31,9 +33,16 @@ public class DepartmentService
                 .orElseThrow(() -> new RuntimeException("Department not found"));
     }
 
-    public Department getDepartmentWithEmployees(int departmentId)
+    public DepartmentEmployeeResponse getDepartmentWithEmployees(int departmentId)
     {
-        return departmentRepository.findDepartmentWithEmployees(departmentId)
+        Department department = departmentRepository.findDepartmentWithEmployees(departmentId)
                 .orElseThrow(() -> new RuntimeException("Department not found"));
+
+        List<String> employeeNames = department.getEmployees()
+                .stream()
+                .map(Employee::getName)
+                .toList();
+
+        return new DepartmentEmployeeResponse(department.getId(), department.getName(), employeeNames);
     }
 }

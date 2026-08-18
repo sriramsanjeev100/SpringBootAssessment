@@ -1,6 +1,8 @@
 package com.example.employee_management.dto.response;
 
-public record DepartmentEmployeeResponse(int departmentId, String departmentName, int employeeId, String employeeName)
+import java.util.List;
+
+public record DepartmentEmployeeResponse(int departmentId, String departmentName, List<String> employeeName)
 {
 
 }

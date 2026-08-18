@@ -1,5 +1,6 @@
 package com.example.employee_management.controller;
 
+import com.example.employee_management.dto.response.DepartmentEmployeeResponse;
 import com.example.employee_management.entity.Department;
 import com.example.employee_management.service.DepartmentService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,13 +35,7 @@ public class DepartmentController
     }
 
     @GetMapping("/{departmentId}")
-    public Department getDepartment(@PathVariable int departmentId)
-    {
-        return departmentService.getDepartmentWithEmployees(departmentId);
-    }
-
-    @GetMapping("/{departmentId}/employees")
-    public Department getDepartmentWithEmployees(@PathVariable int departmentId)
+    public DepartmentEmployeeResponse getDepartmentWithEmployees(@PathVariable int departmentId)
     {
         return departmentService.getDepartmentWithEmployees(departmentId);
     }

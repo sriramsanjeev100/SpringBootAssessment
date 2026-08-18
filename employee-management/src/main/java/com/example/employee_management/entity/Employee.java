@@ -1,37 +1,50 @@
 package com.example.employee_management.entity;
 
-import java.time.LocalDate;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
+@Entity
+@Table(name = "employee")
 public class Employee
 {
-    private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
     private String name;
     private String email;
-    private String department;
     private double salary;
-    private LocalDate joiningDate;
+
+    @ManyToOne
+    @JoinColumn(name = "dept_id")
+    @JsonIgnore
+    private Department department;
 
     public Employee()
     {
 
     }
 
-    public Employee(int id, String name, String email, String department, double salary, LocalDate joiningDate)
+    public Employee(Integer id, String name, String email, double salary, Department department)
     {
         this.id = id;
         this.name = name;
         this.email = email;
-        this.department = department;
         this.salary = salary;
-        this.joiningDate = joiningDate;
+        this.department = department;
     }
 
-    public int getId()
+    public Integer getId()
     {
         return id;
     }
 
-    public void setId(int id)
+    public void setId(Integer id)
     {
         this.id = id;
     }
@@ -56,16 +69,6 @@ public class Employee
         this.email = email;
     }
 
-    public String getDepartment()
-    {
-        return department;
-    }
-
-    public void setDepartment(String department)
-    {
-        this.department = department;
-    }
-
     public double getSalary()
     {
         return salary;
@@ -76,13 +79,13 @@ public class Employee
         this.salary = salary;
     }
 
-    public LocalDate getJoiningDate()
+    public Department getDepartment()
     {
-        return joiningDate;
+        return department;
     }
 
-    public void setJoiningDate(LocalDate joiningDate)
+    public void setDepartment(Department department)
     {
-        this.joiningDate = joiningDate;
+        this.department = department;
     }
 }

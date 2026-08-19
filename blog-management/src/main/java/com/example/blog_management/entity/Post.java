@@ -25,9 +25,6 @@ public class Post
     private String content;
     private LocalDateTime createdDate;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User author;
 
     @ManyToMany
     @JoinTable(
@@ -80,15 +77,6 @@ public class Post
     public void setCreatedDate(LocalDateTime createdDate)
     {
         this.createdDate = createdDate;
-    }
-
-    public User getAuthor()
-    {
-        return author;
-    }
-
-    public void setAuthor(User author) {
-        this.author = author;
     }
 
     public List<Category> getCategories()

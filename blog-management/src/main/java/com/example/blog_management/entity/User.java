@@ -2,6 +2,7 @@ package com.example.blog_management.entity;
 
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.OneToMany;
@@ -10,18 +11,25 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
 
 @Entity
 @Table(name = "users")
-public class User {
-
+public class User
+{
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
+
+    @Column(nullable = false, unique = true)
     private String username;
+
+    @Column(nullable = false, unique = true)
     private String email;
+
+    @Column(nullable = false)
     private String password;
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -30,7 +38,7 @@ public class User {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
-    private List<Post> posts = new ArrayList<>();
+    private Set<Post> posts = new HashSet<>();
 
     public User()
     {
@@ -44,7 +52,7 @@ public class User {
         this.password = password;
     }
 
-    public Integer getId()
+    public UUID getId()
     {
         return id;
     }
@@ -89,12 +97,12 @@ public class User {
         this.profile = profile;
     }
 
-    public List<Post> getPosts()
+    public Set<Post> getPosts()
     {
         return posts;
     }
 
-    public void setPosts(List<Post> posts)
+    public void setPosts(Set<Post> posts)
     {
         this.posts = posts;
     }

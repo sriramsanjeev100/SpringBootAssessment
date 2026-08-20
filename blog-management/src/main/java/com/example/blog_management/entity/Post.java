@@ -2,6 +2,7 @@ package com.example.blog_management.entity;
 
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
@@ -10,18 +11,25 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
 
 @Entity
 @Table(name = "posts")
 public class Post
 {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
+
+    @Column(nullable = false)
     private String title;
+
+    @Column(nullable = false)
     private String content;
+
+    @Column(nullable = false)
     private LocalDateTime createdDate;
 
 
@@ -31,19 +39,19 @@ public class Post
             joinColumns = @JoinColumn(name = "post_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id")
     )
-    private List<Category> categories = new ArrayList<>();
+    private Set<Category> categories = new HashSet<>();
 
     public Post()
     {
 
     }
 
-    public Integer getId()
+    public UUID getId()
     {
         return id;
     }
 
-    public void setId(Integer id)
+    public void setId(UUID id)
     {
         this.id = id;
     }
@@ -78,12 +86,12 @@ public class Post
         this.createdDate = createdDate;
     }
 
-    public List<Category> getCategories()
+    public Set<Category> getCategories()
     {
         return categories;
     }
 
-    public void setCategories(List<Category> categories)
+    public void setCategories(Set<Category> categories)
     {
         this.categories = categories;
     }

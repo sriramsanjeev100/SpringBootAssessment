@@ -2,37 +2,40 @@ package com.example.blog_management.entity;
 
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
 
 @Entity
 @Table(name = "categories")
-public class Category
-{
+public class Category {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
+
+    @Column(nullable = false, unique = true)
     private String name;
 
     @ManyToMany(mappedBy = "categories")
-    private List<Post> posts = new ArrayList<>();
+    private Set<Post> posts = new HashSet<>();
 
     public Category()
     {
 
     }
 
-    public Integer getId()
+    public UUID getId()
     {
         return id;
     }
 
-    public void setId(Integer id)
+    public void setId(UUID id)
     {
         this.id = id;
     }
@@ -47,12 +50,12 @@ public class Category
         this.name = name;
     }
 
-    public List<Post> getPosts()
+    public Set<Post> getPosts()
     {
         return posts;
     }
 
-    public void setPosts(List<Post> posts)
+    public void setPosts(Set<Post> posts)
     {
         this.posts = posts;
     }

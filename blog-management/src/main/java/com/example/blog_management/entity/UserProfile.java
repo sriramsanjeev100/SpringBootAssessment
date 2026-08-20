@@ -2,20 +2,31 @@ package com.example.blog_management.entity;
 
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+
+import java.util.UUID;
 
 @Entity
 @Table(name="user_profiles")
 public class UserProfile
 {
     @Id
-    @GeneratedValue
-    private Integer id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
+
+    @Column(nullable = false)
     private String firstName;
+
+    @Column(nullable = false)
     private String lastName;
+
+    @Column(nullable = false, unique = true)
     private String phone;
+
     private String website;
 
     @OneToOne(mappedBy = "profile")
@@ -26,12 +37,12 @@ public class UserProfile
 
     }
 
-    public Integer getId()
+    public UUID getId()
     {
         return id;
     }
 
-    public void setId(Integer id)
+    public void setId(UUID id)
     {
         this.id = id;
     }

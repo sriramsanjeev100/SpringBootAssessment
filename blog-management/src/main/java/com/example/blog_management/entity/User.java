@@ -5,14 +5,11 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 
-import java.util.HashSet;
-import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -36,16 +33,15 @@ public class User
     @JoinColumn(name = "profile_id")
     private UserProfile profile;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
-    private Set<Post> posts = new HashSet<>();
-
     public User()
     {
 
     }
 
-    public User(String username, String email, String password)
+    public User(
+            String username,
+            String email,
+            String password)
     {
         this.username = username;
         this.email = email;
@@ -95,15 +91,5 @@ public class User
     public void setProfile(UserProfile profile)
     {
         this.profile = profile;
-    }
-
-    public Set<Post> getPosts()
-    {
-        return posts;
-    }
-
-    public void setPosts(Set<Post> posts)
-    {
-        this.posts = posts;
     }
 }

@@ -3,6 +3,8 @@ package com.example.blog_management.dto.request;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
+import java.util.UUID;
+
 public record UserRequest
         (
             @NotBlank
@@ -13,7 +15,9 @@ public record UserRequest
             String email,
 
             @NotBlank
-            String password
+            String password,
+
+            UUID profileId
         )
 {
 

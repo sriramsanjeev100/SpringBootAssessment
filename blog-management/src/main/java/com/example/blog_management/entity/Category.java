@@ -22,9 +22,6 @@ public class Category {
     @Column(nullable = false, unique = true)
     private String name;
 
-    @ManyToMany(mappedBy = "categories")
-    private Set<Post> posts = new HashSet<>();
-
     public Category()
     {
 
@@ -48,15 +45,5 @@ public class Category {
     public void setName(String name)
     {
         this.name = name;
-    }
-
-    public Set<Post> getPosts()
-    {
-        return posts;
-    }
-
-    public void setPosts(Set<Post> posts)
-    {
-        this.posts = posts;
     }
 }

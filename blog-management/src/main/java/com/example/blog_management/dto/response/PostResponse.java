@@ -2,14 +2,15 @@ package com.example.blog_management.dto.response;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 public record PostResponse
         (
-            Integer id,
+            UUID id,
             String title,
             String content,
-            LocalDateTime createdAt,
-            Integer userId,
+            LocalDateTime createdDate,
+            UUID userId,
             List<CategoryResponse> categories
         )
 {

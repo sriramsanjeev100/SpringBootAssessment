@@ -29,9 +29,6 @@ public class UserProfile
 
     private String website;
 
-    @OneToOne(mappedBy = "profile")
-    private User user;
-
     public UserProfile()
     {
 
@@ -85,15 +82,5 @@ public class UserProfile
     public void setWebsite(String website)
     {
         this.website = website;
-    }
-
-    public User getUser()
-    {
-        return user;
-    }
-
-    public void setUser(User user)
-    {
-        this.user = user;
     }
 }

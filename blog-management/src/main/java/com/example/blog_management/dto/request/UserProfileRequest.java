@@ -1,6 +1,20 @@
 package com.example.blog_management.dto.request;
 
-public record UserProfileRequest(String firstName, String lastName, String phone, String website)
+import jakarta.validation.constraints.NotBlank;
+
+public record UserProfileRequest
+        (
+        @NotBlank
+        String firstName,
+
+        @NotBlank
+        String lastName,
+
+        @NotBlank
+        String phone,
+
+        String website
+        )
 {
 
 }

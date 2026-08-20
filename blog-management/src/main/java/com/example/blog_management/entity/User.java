@@ -28,7 +28,8 @@ public class User {
     @JoinColumn(name = "profile_id")
     private UserProfile profile;
 
-    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
     private List<Post> posts = new ArrayList<>();
 
     public User()

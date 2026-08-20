@@ -34,65 +34,32 @@ public class CategoryController
     public ResponseEntity<ApiResponse<CategoryResponse>> createCategory(@Valid @RequestBody CategoryRequest request)
     {
         CategoryResponse response = categoryService.createCategory(request);
-
-        ApiResponse<CategoryResponse> apiResponse =
-                new ApiResponse<>(
-                        LocalDateTime.now(),
-                        HttpStatus.CREATED.value(),
-                        "Category created successfully",
-                        response
-                );
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(apiResponse);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(ApiResponse.success("Category created successfully", response));
     }
 
     @GetMapping
     public ResponseEntity<ApiResponse<List<CategoryResponse>>> getAllCategories()
     {
         List<CategoryResponse> response = categoryService.getAllCategories();
-
-        ApiResponse<List<CategoryResponse>> apiResponse =
-                new ApiResponse<>(
-                        LocalDateTime.now(),
-                        HttpStatus.OK.value(),
-                        "Categories fetched successfully",
-                        response
-                );
-
-        return ResponseEntity.ok(apiResponse);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(ApiResponse.success("Categories fetched successfully", response));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<CategoryResponse>> getCategory(@PathVariable UUID id)
     {
         CategoryResponse response = categoryService.getCategory(id);
-
-        ApiResponse<CategoryResponse> apiResponse =
-                new ApiResponse<>(
-                        LocalDateTime.now(),
-                        HttpStatus.OK.value(),
-                        "Category fetched successfully",
-                        response
-                );
-
-        return ResponseEntity.ok(apiResponse);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(ApiResponse.success("Category fetched successfully", response));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<CategoryResponse>> updateCategory(@PathVariable UUID id, @Valid @RequestBody CategoryRequest request)
     {
-
         CategoryResponse response = categoryService.updateCategory(id, request);
-
-        ApiResponse<CategoryResponse> apiResponse =
-                new ApiResponse<>(
-                        LocalDateTime.now(),
-                        HttpStatus.OK.value(),
-                        "Category updated successfully",
-                        response
-                );
-
-        return ResponseEntity.ok(apiResponse);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(ApiResponse.success("Category updated successfully", response));
     }
 
     // DELETE
@@ -100,15 +67,7 @@ public class CategoryController
     public ResponseEntity<ApiResponse<Void>> deleteCategory(@PathVariable UUID id)
     {
         categoryService.deleteCategory(id);
-
-        ApiResponse<Void> response =
-                new ApiResponse<>(
-                        LocalDateTime.now(),
-                        HttpStatus.NO_CONTENT.value(),
-                        "Category deleted successfully",
-                        null
-                );
-
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(response);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                .body(ApiResponse.success("Category deleted successfully", null));
     }
 }

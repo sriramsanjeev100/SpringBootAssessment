@@ -33,74 +33,39 @@ public class UserProfileController
     public ResponseEntity<ApiResponse<UserProfileResponse>> createProfile(@Valid @RequestBody UserProfileRequest request)
     {
         UserProfileResponse response = userProfileService.createProfile(request);
-        ApiResponse<UserProfileResponse> apiResponse =
-                new ApiResponse<>(
-                        LocalDateTime.now(),
-                        HttpStatus.CREATED.value(),
-                        "Profile created successfully",
-                        response
-                );
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(apiResponse);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(ApiResponse.success("Profile created successfully", response));
     }
 
     @GetMapping
     public ResponseEntity<ApiResponse<List<UserProfileResponse>>> getAllProfiles()
     {
         List<UserProfileResponse> response = userProfileService.getAllProfiles();
-        ApiResponse<List<UserProfileResponse>> apiResponse =
-                new ApiResponse<>(
-                        LocalDateTime.now(),
-                        HttpStatus.OK.value(),
-                        "Profiles fetched successfully",
-                        response
-                );
-
-        return ResponseEntity.ok(apiResponse);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(ApiResponse.success("Profiles fetched successfully", response));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<UserProfileResponse>> getProfile(@PathVariable UUID id)
     {
         UserProfileResponse response = userProfileService.getProfile(id);
-        ApiResponse<UserProfileResponse> apiResponse =
-                new ApiResponse<>(
-                        LocalDateTime.now(),
-                        HttpStatus.OK.value(),
-                        "Profile fetched successfully",
-                        response
-                );
-
-        return ResponseEntity.ok(apiResponse);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(ApiResponse.success("Profile fetched successfully", response));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<UserProfileResponse>> updateProfile(@PathVariable UUID id, @Valid @RequestBody UserProfileRequest request)
     {
         UserProfileResponse response = userProfileService.updateProfile(id, request);
-        ApiResponse<UserProfileResponse> apiResponse =
-                new ApiResponse<>(
-                        LocalDateTime.now(),
-                        HttpStatus.OK.value(),
-                        "Profile updated successfully",
-                        response
-                );
-
-        return ResponseEntity.ok(apiResponse);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(ApiResponse.success("Profile updated successfully", response));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> deleteProfile(@PathVariable UUID id)
     {
         userProfileService.deleteProfile(id);
-        ApiResponse<Void> response =
-                new ApiResponse<>(
-                        LocalDateTime.now(),
-                        HttpStatus.NO_CONTENT.value(),
-                        "Profile deleted successfully",
-                        null
-                );
-
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(response);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                .body(ApiResponse.success("User deleted successfully", null));
     }
 }

@@ -34,82 +34,39 @@ public class PostController
     public ResponseEntity<ApiResponse<PostResponse>> createPost(@Valid @RequestBody PostRequest request)
     {
         PostResponse response = postService.createPost(request);
-
-        ApiResponse<PostResponse> apiResponse =
-                new ApiResponse<>(
-                        LocalDateTime.now(),
-                        HttpStatus.CREATED.value(),
-                        "Post created successfully",
-                        response
-                );
-
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .header("X-Message", "Post created")
-                .body(apiResponse);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(ApiResponse.success("Post created successfully", response));
     }
 
     @GetMapping
     public ResponseEntity<ApiResponse<List<PostResponse>>> getAllPosts()
     {
         List<PostResponse> response = postService.getAllPosts();
-
-        ApiResponse<List<PostResponse>> apiResponse =
-                new ApiResponse<>(
-                        LocalDateTime.now(),
-                        HttpStatus.OK.value(),
-                        "Posts fetched successfully",
-                        response
-                );
-
-        return ResponseEntity.ok(apiResponse);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(ApiResponse.success("Posts fetched successfully", response));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<PostResponse>> getPost(@PathVariable UUID id)
     {
         PostResponse response = postService.getPost(id);
-
-        ApiResponse<PostResponse> apiResponse =
-                new ApiResponse<>(
-                        LocalDateTime.now(),
-                        HttpStatus.OK.value(),
-                        "Post fetched successfully",
-                        response
-                );
-
-        return ResponseEntity.ok(apiResponse);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(ApiResponse.success("Post fetched successfully", response));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<PostResponse>> updatePost(@PathVariable UUID id, @Valid @RequestBody PostRequest request)
     {
         PostResponse response = postService.updatePost(id, request);
-
-        ApiResponse<PostResponse> apiResponse =
-                new ApiResponse<>(
-                        LocalDateTime.now(),
-                        HttpStatus.OK.value(),
-                        "Post updated successfully",
-                        response
-                );
-
-        return ResponseEntity.ok(apiResponse);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(ApiResponse.success("Post updated successfully", response));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> deletePost(@PathVariable UUID id)
     {
         postService.deletePost(id);
-
-        ApiResponse<Void> response =
-                new ApiResponse<>(
-                        LocalDateTime.now(),
-                        HttpStatus.NO_CONTENT.value(),
-                        "Post deleted successfully",
-                        null
-                );
-
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(response);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                .body(ApiResponse.success("Post deleted successfully", null));
     }
 }

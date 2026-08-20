@@ -34,78 +34,39 @@ public class UserController
     public ResponseEntity<ApiResponse<UserResponse>> createUser(@Valid @RequestBody UserRequest request)
     {
         UserResponse response = userService.createUser(request);
-        ApiResponse<UserResponse> apiResponse =
-                new ApiResponse<>(
-                        LocalDateTime.now(),
-                        HttpStatus.CREATED.value(),
-                        "User created successfully",
-                        response
-                );
-
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .header("X-Message", "User created")
-                .body(apiResponse);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(ApiResponse.success("User created successfully", response));
     }
 
     @GetMapping
     public ResponseEntity<ApiResponse<List<UserResponse>>> getAllUsers()
     {
         List<UserResponse> response = userService.getAllUsers();
-        ApiResponse<List<UserResponse>> apiResponse =
-                new ApiResponse<>(
-                        LocalDateTime.now(),
-                        HttpStatus.OK.value(),
-                        "Users fetched successfully",
-                        response
-                );
-
-        return ResponseEntity.ok(apiResponse);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(ApiResponse.success("Users fetched successfully", response));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<UserResponse>> getUser(@PathVariable UUID id)
     {
         UserResponse response = userService.getUser(id);
-
-        ApiResponse<UserResponse> apiResponse =
-                new ApiResponse<>(
-                        LocalDateTime.now(),
-                        HttpStatus.OK.value(),
-                        "User fetched successfully",
-                        response
-                );
-
-        return ResponseEntity.ok(apiResponse);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(ApiResponse.success("User fetched successfully", response));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<UserResponse>> updateUser(@PathVariable UUID id, @Valid @RequestBody UserRequest request)
     {
         UserResponse response = userService.updateUser(id, request);
-        ApiResponse<UserResponse> apiResponse =
-                new ApiResponse<>(
-                        LocalDateTime.now(),
-                        HttpStatus.OK.value(),
-                        "User updated successfully",
-                        response
-                );
-
-        return ResponseEntity.ok(apiResponse);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(ApiResponse.success("User updated successfully", response));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> deleteUser(@PathVariable UUID id)
     {
         userService.deleteUser(id);
-        ApiResponse<Void> response =
-                new ApiResponse<>(
-                        LocalDateTime.now(),
-                        HttpStatus.NO_CONTENT.value(),
-                        "User deleted successfully",
-                        null
-                );
-
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(response);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                .body(ApiResponse.success("User deleted successfully", null));
     }
 }

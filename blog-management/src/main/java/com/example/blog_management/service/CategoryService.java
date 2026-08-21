@@ -6,6 +6,8 @@ import com.example.blog_management.entity.Category;
 import com.example.blog_management.exception.CategoryNotFoundException;
 import com.example.blog_management.repository.CategoryRepository;
 import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,6 +17,7 @@ import java.util.UUID;
 @Transactional
 public class CategoryService
 {
+    private static final Logger log = LoggerFactory.getLogger(CategoryService.class);
     private final CategoryRepository categoryRepository;
     public CategoryService(CategoryRepository categoryRepository)
     {
@@ -23,6 +26,7 @@ public class CategoryService
 
     public CategoryResponse createCategory(CategoryRequest request)
     {
+        log.info("Creating category with name: {}", request.name());
         Category category = new Category();
         setCategoryFields(category, request);
         Category savedCategory = categoryRepository.save(category);
@@ -31,6 +35,7 @@ public class CategoryService
 
     public List<CategoryResponse> getAllCategories()
     {
+        log.info("Fetching all categories");
         return categoryRepository.findAll()
                 .stream()
                 .map(this::mapToResponse)
@@ -39,6 +44,7 @@ public class CategoryService
 
     public CategoryResponse getCategory(UUID id)
     {
+        log.info("Fetching category with id: {}", id);
         Category category = categoryRepository.findById(id)
                 .orElseThrow(() -> new CategoryNotFoundException("Category not found with id: " + id));
 
@@ -47,20 +53,24 @@ public class CategoryService
 
     public CategoryResponse updateCategory(UUID id, CategoryRequest request)
     {
+        log.info("Updating category with id: {}", id);
         Category category = categoryRepository.findById(id)
                         .orElseThrow(() -> new CategoryNotFoundException("Category not found with id: " + id));
 
         setCategoryFields(category, request);
         Category updatedCategory = categoryRepository.save(category);
+        log.info("Category updated successfully with id: {}", id);
         return mapToResponse(updatedCategory);
     }
 
     public void deleteCategory(UUID id)
     {
+        log.info("Deleting category with id: {}", id);
         Category category = categoryRepository.findById(id)
                 .orElseThrow(() -> new CategoryNotFoundException("Category not found with id: " + id));
 
         categoryRepository.delete(category);
+        log.info("Category deleted successfully with id: {}", id);
     }
 
     private void setCategoryFields(Category category,CategoryRequest request)

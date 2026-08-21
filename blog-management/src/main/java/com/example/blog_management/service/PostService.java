@@ -13,6 +13,8 @@ import com.example.blog_management.repository.CategoryRepository;
 import com.example.blog_management.repository.PostRepository;
 import com.example.blog_management.repository.UserRepository;
 import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -28,6 +30,7 @@ import java.util.UUID;
 @Transactional
 public class PostService
 {
+    private static final Logger log = LoggerFactory.getLogger(PostService.class);
     private final PostRepository postRepository;
     private final UserRepository userRepository;
     private final CategoryRepository categoryRepository;
@@ -41,15 +44,18 @@ public class PostService
 
     public PostResponse createPost(PostRequest request)
     {
+        log.info("Creating post with title: {} for user: {}", request.title(), request.userId());
         Post post = new Post();
         setPostFields(post, request);
         post.setCreatedDate(LocalDateTime.now());
         Post savedPost = postRepository.save(post);
+        log.info("Post created successfully with id: {}", savedPost.getId());
         return mapToResponse(savedPost);
     }
 
     public List<PostResponse> getAllPosts()
     {
+        log.info("Fetching all posts");
         return postRepository.findAll()
                 .stream()
                 .map(this::mapToResponse)
@@ -58,6 +64,7 @@ public class PostService
 
     public PostResponse getPost(UUID id)
     {
+        log.info("Fetching post with id: {}", id);
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new PostNotFoundException("Post not found with id: " + id));
 
@@ -66,20 +73,24 @@ public class PostService
 
     public PostResponse updatePost(UUID id, PostRequest request)
     {
+        log.info("Updating post with id: {}", id);
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new PostNotFoundException("Post not found with id: " + id));
 
         setPostFields(post, request);
         Post updatedPost = postRepository.save(post);
+        log.info("Post updated successfully with id: {}", id);
         return mapToResponse(updatedPost);
     }
 
     public void deletePost(UUID id)
     {
+        log.info("Deleting post with id: {}", id);
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new PostNotFoundException("Post not found with id: " + id));
 
         postRepository.delete(post);
+        log.info("Post deleted successfully with id: {}", id);
     }
 
     private void setPostFields(Post post, PostRequest request)

@@ -6,6 +6,8 @@ import com.example.blog_management.entity.UserProfile;
 import com.example.blog_management.exception.UserProfileNotFoundException;
 import com.example.blog_management.repository.UserProfileRepository;
 import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,6 +17,7 @@ import java.util.UUID;
 @Transactional
 public class UserProfileService
 {
+    private static final Logger log = LoggerFactory.getLogger(UserProfileService.class);
     private final UserProfileRepository userProfileRepository;
     public UserProfileService(UserProfileRepository userProfileRepository)
     {
@@ -23,6 +26,7 @@ public class UserProfileService
 
     public UserProfileResponse createProfile(UserProfileRequest request)
     {
+        log.info("Creating user profile for: {} {}", request.firstName(), request.lastName());
         UserProfile profile = new UserProfile();
         setProfileFields(profile, request);
         UserProfile savedProfile = userProfileRepository.save(profile);
@@ -31,6 +35,7 @@ public class UserProfileService
 
     public List<UserProfileResponse> getAllProfiles()
     {
+        log.info("Fetching all user profiles");
         return userProfileRepository.findAll()
                 .stream()
                 .map(this::mapToResponse)
@@ -39,6 +44,7 @@ public class UserProfileService
 
     public UserProfileResponse getProfile(UUID id)
     {
+        log.info("Fetching user profile with id: {}", id);
         UserProfile profile = userProfileRepository.findById(id)
                         .orElseThrow(() -> new UserProfileNotFoundException("User profile not found with id: " + id));
 
@@ -47,20 +53,24 @@ public class UserProfileService
 
     public UserProfileResponse updateProfile(UUID id, UserProfileRequest request)
     {
+        log.info("Updating user profile with id: {}", id);
         UserProfile profile = userProfileRepository.findById(id)
                         .orElseThrow(() -> new UserProfileNotFoundException("User profile not found with id: " + id));
 
         setProfileFields(profile, request);
         UserProfile updatedProfile = userProfileRepository.save(profile);
+        log.info("User profile updated successfully with id: {}", id);
         return mapToResponse(updatedProfile);
     }
 
     public void deleteProfile(UUID id)
     {
+        log.info("Deleting user profile with id: {}", id);
         UserProfile profile = userProfileRepository.findById(id)
                 .orElseThrow(() -> new UserProfileNotFoundException("User profile not found with id: " + id));
 
         userProfileRepository.delete(profile);
+        log.info("User profile deleted successfully with id: {}", id);
     }
 
     private void setProfileFields(UserProfile profile, UserProfileRequest request)

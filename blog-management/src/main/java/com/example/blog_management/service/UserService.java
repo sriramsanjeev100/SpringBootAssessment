@@ -1,5 +1,7 @@
 package com.example.blog_management.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.example.blog_management.dto.request.UserRequest;
 import com.example.blog_management.dto.response.UserResponse;
 import com.example.blog_management.entity.User;
@@ -18,6 +20,7 @@ import java.util.UUID;
 @Transactional
 public class UserService
 {
+    private static final Logger log = LoggerFactory.getLogger(UserService.class);
     private final UserRepository userRepository;
     private final UserProfileRepository userProfileRepository;
 
@@ -29,14 +32,17 @@ public class UserService
 
     public UserResponse createUser(UserRequest request)
     {
+        log.info("Creating user with username: {}", request.username());
         User user = new User();
         setUserFields(user, request);
         User savedUser = userRepository.save(user);
+        log.info("User created successfully with id: {}", savedUser.getId());
         return mapToResponse(savedUser);
     }
 
     public List<UserResponse> getAllUsers()
     {
+        log.info("Fetching all users");
         return userRepository.findAll()
                 .stream()
                 .map(this::mapToResponse)
@@ -45,6 +51,7 @@ public class UserService
 
     public UserResponse getUser(UUID id)
     {
+        log.info("Fetching user with id: {}", id);
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
 
@@ -53,20 +60,24 @@ public class UserService
 
     public UserResponse updateUser(UUID id, UserRequest request)
     {
+        log.info("Updating user with id: {}", id);
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
 
         setUserFields(user, request);
         User updatedUser = userRepository.save(user);
+        log.info("User updated successfully with id: {}", id);
         return mapToResponse(updatedUser);
     }
 
     public void deleteUser(UUID id)
     {
+        log.info("Deleting user with id: {}", id);
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
 
         userRepository.delete(user);
+        log.info("User deleted successfully with id: {}", id);
     }
 
     private void setUserFields(User user, UserRequest request)

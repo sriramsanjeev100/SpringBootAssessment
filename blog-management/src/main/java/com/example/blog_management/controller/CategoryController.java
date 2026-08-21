@@ -62,7 +62,6 @@ public class CategoryController
                 .body(ApiResponse.success("Category updated successfully", response));
     }
 
-    // DELETE
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> deleteCategory(@PathVariable UUID id)
     {

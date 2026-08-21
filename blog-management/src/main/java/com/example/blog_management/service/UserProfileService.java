@@ -5,12 +5,14 @@ import com.example.blog_management.dto.response.UserProfileResponse;
 import com.example.blog_management.entity.UserProfile;
 import com.example.blog_management.exception.UserProfileNotFoundException;
 import com.example.blog_management.repository.UserProfileRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
 
 @Service
+@Transactional
 public class UserProfileService
 {
     private final UserProfileRepository userProfileRepository;
@@ -22,10 +24,7 @@ public class UserProfileService
     public UserProfileResponse createProfile(UserProfileRequest request)
     {
         UserProfile profile = new UserProfile();
-        profile.setFirstName(request.firstName());
-        profile.setLastName(request.lastName());
-        profile.setPhone(request.phone());
-        profile.setWebsite(request.website());
+        setProfileFields(profile, request);
         UserProfile savedProfile = userProfileRepository.save(profile);
         return mapToResponse(savedProfile);
     }
@@ -51,11 +50,7 @@ public class UserProfileService
         UserProfile profile = userProfileRepository.findById(id)
                         .orElseThrow(() -> new UserProfileNotFoundException("User profile not found with id: " + id));
 
-        profile.setFirstName(request.firstName());
-        profile.setLastName(request.lastName());
-        profile.setPhone(request.phone());
-        profile.setWebsite(request.website());
-
+        setProfileFields(profile, request);
         UserProfile updatedProfile = userProfileRepository.save(profile);
         return mapToResponse(updatedProfile);
     }
@@ -66,6 +61,14 @@ public class UserProfileService
                 .orElseThrow(() -> new UserProfileNotFoundException("User profile not found with id: " + id));
 
         userProfileRepository.delete(profile);
+    }
+
+    private void setProfileFields(UserProfile profile, UserProfileRequest request)
+    {
+        profile.setFirstName(request.firstName());
+        profile.setLastName(request.lastName());
+        profile.setPhone(request.phone());
+        profile.setWebsite(request.website());
     }
 
     private UserProfileResponse mapToResponse(UserProfile profile)

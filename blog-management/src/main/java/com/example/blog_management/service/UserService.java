@@ -8,12 +8,14 @@ import com.example.blog_management.exception.UserNotFoundException;
 import com.example.blog_management.exception.UserProfileNotFoundException;
 import com.example.blog_management.repository.UserProfileRepository;
 import com.example.blog_management.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
 
 @Service
+@Transactional
 public class UserService
 {
     private final UserRepository userRepository;
@@ -28,24 +30,17 @@ public class UserService
     public UserResponse createUser(UserRequest request)
     {
         User user = new User();
-        user.setUsername(request.username());
-        user.setEmail(request.email());
-        user.setPassword(request.password());
-        if (request.profileId() != null)
-        {
-            UserProfile profile = userProfileRepository.findById(request.profileId())
-                            .orElseThrow(() -> new UserProfileNotFoundException("User profile not found with id: " + request.profileId()));
-
-            user.setProfile(profile);
-        }
-
+        setUserFields(user, request);
         User savedUser = userRepository.save(user);
         return mapToResponse(savedUser);
     }
 
     public List<UserResponse> getAllUsers()
     {
-        return userRepository.findAll().stream().map(this::mapToResponse).toList();
+        return userRepository.findAll()
+                .stream()
+                .map(this::mapToResponse)
+                .toList();
     }
 
     public UserResponse getUser(UUID id)
@@ -61,22 +56,7 @@ public class UserService
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
 
-        user.setUsername(request.username());
-        user.setEmail(request.email());
-        user.setPassword(request.password());
-
-        if (request.profileId() != null)
-        {
-            UserProfile profile = userProfileRepository.findById(request.profileId())
-                            .orElseThrow(() -> new UserProfileNotFoundException("User profile not found with id: " + request.profileId()));
-
-            user.setProfile(profile);
-        }
-        else
-        {
-            user.setProfile(null);
-        }
-
+        setUserFields(user, request);
         User updatedUser = userRepository.save(user);
         return mapToResponse(updatedUser);
     }
@@ -87,6 +67,24 @@ public class UserService
                 .orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
 
         userRepository.delete(user);
+    }
+
+    private void setUserFields(User user, UserRequest request)
+    {
+        user.setUsername(request.username());
+        user.setEmail(request.email());
+        user.setPassword(request.password());
+        if (request.profileId() != null)
+        {
+            UserProfile profile = userProfileRepository.findById(request.profileId())
+                    .orElseThrow(() -> new UserProfileNotFoundException("User profile not found with id: " + request.profileId()));
+
+            user.setProfile(profile);
+        }
+        else
+        {
+            user.setProfile(null);
+        }
     }
 
     private UserResponse mapToResponse(User user)

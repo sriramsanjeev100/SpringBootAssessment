@@ -5,12 +5,14 @@ import com.example.blog_management.dto.response.CategoryResponse;
 import com.example.blog_management.entity.Category;
 import com.example.blog_management.exception.CategoryNotFoundException;
 import com.example.blog_management.repository.CategoryRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
 
 @Service
+@Transactional
 public class CategoryService
 {
     private final CategoryRepository categoryRepository;
@@ -22,7 +24,7 @@ public class CategoryService
     public CategoryResponse createCategory(CategoryRequest request)
     {
         Category category = new Category();
-        category.setName(request.name());
+        setCategoryFields(category, request);
         Category savedCategory = categoryRepository.save(category);
         return mapToResponse(savedCategory);
     }
@@ -48,7 +50,7 @@ public class CategoryService
         Category category = categoryRepository.findById(id)
                         .orElseThrow(() -> new CategoryNotFoundException("Category not found with id: " + id));
 
-        category.setName(request.name());
+        setCategoryFields(category, request);
         Category updatedCategory = categoryRepository.save(category);
         return mapToResponse(updatedCategory);
     }
@@ -59,6 +61,11 @@ public class CategoryService
                 .orElseThrow(() -> new CategoryNotFoundException("Category not found with id: " + id));
 
         categoryRepository.delete(category);
+    }
+
+    private void setCategoryFields(Category category,CategoryRequest request)
+    {
+        category.setName(request.name());
     }
 
     private CategoryResponse mapToResponse(Category category)

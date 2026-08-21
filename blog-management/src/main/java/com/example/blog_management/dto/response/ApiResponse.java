@@ -20,4 +20,14 @@ public record ApiResponse<T>(
                         LocalDateTime.now()
                 );
         }
+
+        public static <T> ApiResponse<T> error(String message, T data)
+        {
+                return new ApiResponse<>(
+                        false,
+                        message,
+                        data,
+                        LocalDateTime.now()
+                );
+        }
 }

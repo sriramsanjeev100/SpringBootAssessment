@@ -12,6 +12,7 @@ import com.example.blog_management.exception.UserNotFoundException;
 import com.example.blog_management.repository.CategoryRepository;
 import com.example.blog_management.repository.PostRepository;
 import com.example.blog_management.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -21,6 +22,7 @@ import java.util.Set;
 import java.util.UUID;
 
 @Service
+@Transactional
 public class PostService
 {
     private final PostRepository postRepository;
@@ -36,17 +38,9 @@ public class PostService
 
     public PostResponse createPost(PostRequest request)
     {
-        User user = userRepository.findById(request.userId())
-                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + request.userId()));
-
-        Set<Category> categories = getCategories(request.categoryIds());
-
         Post post = new Post();
-        post.setTitle(request.title());
-        post.setContent(request.content());
+        setPostFields(post, request);
         post.setCreatedDate(LocalDateTime.now());
-        post.setUser(user);
-        post.setCategories(categories);
         Post savedPost = postRepository.save(post);
         return mapToResponse(savedPost);
     }
@@ -72,16 +66,7 @@ public class PostService
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new PostNotFoundException("Post not found with id: " + id));
 
-        User user = userRepository.findById(request.userId())
-                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + request.userId()));
-
-        Set<Category> categories = getCategories(request.categoryIds());
-
-        post.setTitle(request.title());
-        post.setContent(request.content());
-        post.setUser(user);
-        post.setCategories(categories);
-
+        setPostFields(post, request);
         Post updatedPost = postRepository.save(post);
         return mapToResponse(updatedPost);
     }
@@ -92,6 +77,18 @@ public class PostService
                 .orElseThrow(() -> new PostNotFoundException("Post not found with id: " + id));
 
         postRepository.delete(post);
+    }
+
+    private void setPostFields(Post post, PostRequest request)
+    {
+        User user = userRepository.findById(request.userId())
+                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + request.userId()));
+
+        Set<Category> categories = getCategories(request.categoryIds());
+        post.setTitle(request.title());
+        post.setContent(request.content());
+        post.setUser(user);
+        post.setCategories(categories);
     }
 
     private Set<Category> getCategories(List<UUID> categoryIds)

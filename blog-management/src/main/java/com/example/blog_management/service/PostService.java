@@ -78,9 +78,8 @@ public class PostService
                 .orElseThrow(() -> new PostNotFoundException("Post not found with id: " + id));
 
         setPostFields(post, request);
-        Post updatedPost = postRepository.save(post);
         log.info("Post updated successfully with id: {}", id);
-        return mapToResponse(updatedPost);
+        return mapToResponse(post);
     }
 
     public void deletePost(UUID id)

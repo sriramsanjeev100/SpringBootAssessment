@@ -58,9 +58,8 @@ public class UserProfileService
                         .orElseThrow(() -> new UserProfileNotFoundException("User profile not found with id: " + id));
 
         setProfileFields(profile, request);
-        UserProfile updatedProfile = userProfileRepository.save(profile);
         log.info("User profile updated successfully with id: {}", id);
-        return mapToResponse(updatedProfile);
+        return mapToResponse(profile);
     }
 
     public void deleteProfile(UUID id)

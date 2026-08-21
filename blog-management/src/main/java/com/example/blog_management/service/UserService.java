@@ -65,9 +65,8 @@ public class UserService
                 .orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
 
         setUserFields(user, request);
-        User updatedUser = userRepository.save(user);
         log.info("User updated successfully with id: {}", id);
-        return mapToResponse(updatedUser);
+        return mapToResponse(user);
     }
 
     public void deleteUser(UUID id)

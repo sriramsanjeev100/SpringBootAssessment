@@ -58,9 +58,8 @@ public class CategoryService
                         .orElseThrow(() -> new CategoryNotFoundException("Category not found with id: " + id));
 
         setCategoryFields(category, request);
-        Category updatedCategory = categoryRepository.save(category);
         log.info("Category updated successfully with id: {}", id);
-        return mapToResponse(updatedCategory);
+        return mapToResponse(category);
     }
 
     public void deleteCategory(UUID id)

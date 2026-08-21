@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -25,7 +24,8 @@ import java.util.UUID;
 public class UserProfileController
 {
     private final UserProfileService userProfileService;
-    public UserProfileController(UserProfileService userProfileService) {
+    public UserProfileController(UserProfileService userProfileService)
+    {
         this.userProfileService = userProfileService;
     }
 
@@ -41,7 +41,7 @@ public class UserProfileController
     public ResponseEntity<ApiResponse<List<UserProfileResponse>>> getAllProfiles()
     {
         List<UserProfileResponse> response = userProfileService.getAllProfiles();
-        return ResponseEntity.status(HttpStatus.CREATED)
+        return ResponseEntity.status(HttpStatus.OK)
                 .body(ApiResponse.success("Profiles fetched successfully", response));
     }
 
@@ -49,7 +49,7 @@ public class UserProfileController
     public ResponseEntity<ApiResponse<UserProfileResponse>> getProfile(@PathVariable UUID id)
     {
         UserProfileResponse response = userProfileService.getProfile(id);
-        return ResponseEntity.status(HttpStatus.CREATED)
+        return ResponseEntity.status(HttpStatus.OK)
                 .body(ApiResponse.success("Profile fetched successfully", response));
     }
 
@@ -57,7 +57,7 @@ public class UserProfileController
     public ResponseEntity<ApiResponse<UserProfileResponse>> updateProfile(@PathVariable UUID id, @Valid @RequestBody UserProfileRequest request)
     {
         UserProfileResponse response = userProfileService.updateProfile(id, request);
-        return ResponseEntity.status(HttpStatus.CREATED)
+        return ResponseEntity.status(HttpStatus.OK)
                 .body(ApiResponse.success("Profile updated successfully", response));
     }
 
@@ -65,7 +65,7 @@ public class UserProfileController
     public ResponseEntity<ApiResponse<Void>> deleteProfile(@PathVariable UUID id)
     {
         userProfileService.deleteProfile(id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT)
+        return ResponseEntity.status(HttpStatus.OK)
                 .body(ApiResponse.success("User deleted successfully", null));
     }
 }

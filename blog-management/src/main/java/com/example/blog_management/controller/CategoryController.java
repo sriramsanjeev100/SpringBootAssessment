@@ -42,7 +42,7 @@ public class CategoryController
     public ResponseEntity<ApiResponse<List<CategoryResponse>>> getAllCategories()
     {
         List<CategoryResponse> response = categoryService.getAllCategories();
-        return ResponseEntity.status(HttpStatus.CREATED)
+        return ResponseEntity.status(HttpStatus.OK)
                 .body(ApiResponse.success("Categories fetched successfully", response));
     }
 
@@ -50,7 +50,7 @@ public class CategoryController
     public ResponseEntity<ApiResponse<CategoryResponse>> getCategory(@PathVariable UUID id)
     {
         CategoryResponse response = categoryService.getCategory(id);
-        return ResponseEntity.status(HttpStatus.CREATED)
+        return ResponseEntity.status(HttpStatus.OK)
                 .body(ApiResponse.success("Category fetched successfully", response));
     }
 
@@ -58,7 +58,7 @@ public class CategoryController
     public ResponseEntity<ApiResponse<CategoryResponse>> updateCategory(@PathVariable UUID id, @Valid @RequestBody CategoryRequest request)
     {
         CategoryResponse response = categoryService.updateCategory(id, request);
-        return ResponseEntity.status(HttpStatus.CREATED)
+        return ResponseEntity.status(HttpStatus.OK)
                 .body(ApiResponse.success("Category updated successfully", response));
     }
 
@@ -66,7 +66,7 @@ public class CategoryController
     public ResponseEntity<ApiResponse<Void>> deleteCategory(@PathVariable UUID id)
     {
         categoryService.deleteCategory(id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT)
+        return ResponseEntity.status(HttpStatus.OK)
                 .body(ApiResponse.success("Category deleted successfully", null));
     }
 }

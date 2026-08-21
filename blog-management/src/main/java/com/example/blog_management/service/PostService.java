@@ -14,6 +14,9 @@ import com.example.blog_management.repository.PostRepository;
 import com.example.blog_management.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -106,6 +109,16 @@ public class PostService
             categories.add(category);
         }
         return categories;
+    }
+
+    public Page<PostResponse> findRecentPostsByCategory(UUID categoryId, int page, int size)
+    {
+        categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new CategoryNotFoundException("Category not found with id: " + categoryId));
+
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Post> posts = postRepository.findRecentPostsByCategory(categoryId, pageable);
+        return posts.map(this::mapToResponse);
     }
 
     private PostResponse mapToResponse(Post post)

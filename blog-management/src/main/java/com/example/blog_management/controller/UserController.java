@@ -42,7 +42,7 @@ public class UserController
     public ResponseEntity<ApiResponse<List<UserResponse>>> getAllUsers()
     {
         List<UserResponse> response = userService.getAllUsers();
-        return ResponseEntity.status(HttpStatus.CREATED)
+        return ResponseEntity.status(HttpStatus.OK)
                 .body(ApiResponse.success("Users fetched successfully", response));
     }
 
@@ -50,7 +50,7 @@ public class UserController
     public ResponseEntity<ApiResponse<UserResponse>> getUser(@PathVariable UUID id)
     {
         UserResponse response = userService.getUser(id);
-        return ResponseEntity.status(HttpStatus.CREATED)
+        return ResponseEntity.status(HttpStatus.OK)
                 .body(ApiResponse.success("User fetched successfully", response));
     }
 
@@ -58,7 +58,7 @@ public class UserController
     public ResponseEntity<ApiResponse<UserResponse>> updateUser(@PathVariable UUID id, @Valid @RequestBody UserRequest request)
     {
         UserResponse response = userService.updateUser(id, request);
-        return ResponseEntity.status(HttpStatus.CREATED)
+        return ResponseEntity.status(HttpStatus.OK)
                 .body(ApiResponse.success("User updated successfully", response));
     }
 
@@ -66,7 +66,7 @@ public class UserController
     public ResponseEntity<ApiResponse<Void>> deleteUser(@PathVariable UUID id)
     {
         userService.deleteUser(id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT)
+        return ResponseEntity.status(HttpStatus.OK)
                 .body(ApiResponse.success("User deleted successfully", null));
     }
 }

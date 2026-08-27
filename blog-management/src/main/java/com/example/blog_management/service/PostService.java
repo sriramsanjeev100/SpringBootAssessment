@@ -78,18 +78,16 @@ public class PostService
                 .orElseThrow(() -> new PostNotFoundException("Post not found with id: " + id));
 
         setPostFields(post, request);
-        log.info("Post updated successfully with id: {}", id);
         return mapToResponse(post);
     }
 
     public void deletePost(UUID id)
     {
-        log.info("Deleting post with id: {}", id);
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new PostNotFoundException("Post not found with id: " + id));
 
         postRepository.delete(post);
-        log.info("Post deleted successfully with id: {}", id);
+        log.info("Deleted post with id: {}", id);
     }
 
     private void setPostFields(Post post, PostRequest request)
@@ -123,9 +121,6 @@ public class PostService
 
     public Page<PostResponse> findRecentPostsByCategory(UUID categoryId, int page, int size)
     {
-        categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new CategoryNotFoundException("Category not found with id: " + categoryId));
-
         Pageable pageable = PageRequest.of(page, size);
         Page<Post> posts = postRepository.findRecentPostsByCategory(categoryId, pageable);
         return posts.map(this::mapToResponse);

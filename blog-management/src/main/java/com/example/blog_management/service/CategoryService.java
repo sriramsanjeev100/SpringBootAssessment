@@ -58,13 +58,11 @@ public class CategoryService
                         .orElseThrow(() -> new CategoryNotFoundException("Category not found with id: " + id));
 
         setCategoryFields(category, request);
-        log.info("Category updated successfully with id: {}", id);
         return mapToResponse(category);
     }
 
     public void deleteCategory(UUID id)
     {
-        log.info("Deleting category with id: {}", id);
         Category category = categoryRepository.findById(id)
                 .orElseThrow(() -> new CategoryNotFoundException("Category not found with id: " + id));
 

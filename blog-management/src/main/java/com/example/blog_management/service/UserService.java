@@ -36,7 +36,6 @@ public class UserService
         User user = new User();
         setUserFields(user, request);
         User savedUser = userRepository.save(user);
-        log.info("User created successfully with id: {}", savedUser.getId());
         return mapToResponse(savedUser);
     }
 
@@ -60,7 +59,6 @@ public class UserService
 
     public UserResponse updateUser(UUID id, UserRequest request)
     {
-        log.info("Updating user with id: {}", id);
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
 
@@ -71,7 +69,6 @@ public class UserService
 
     public void deleteUser(UUID id)
     {
-        log.info("Deleting user with id: {}", id);
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
 

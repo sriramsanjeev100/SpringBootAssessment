@@ -53,7 +53,6 @@ public class UserProfileService
 
     public UserProfileResponse updateProfile(UUID id, UserProfileRequest request)
     {
-        log.info("Updating user profile with id: {}", id);
         UserProfile profile = userProfileRepository.findById(id)
                         .orElseThrow(() -> new UserProfileNotFoundException("User profile not found with id: " + id));
 
@@ -64,7 +63,6 @@ public class UserProfileService
 
     public void deleteProfile(UUID id)
     {
-        log.info("Deleting user profile with id: {}", id);
         UserProfile profile = userProfileRepository.findById(id)
                 .orElseThrow(() -> new UserProfileNotFoundException("User profile not found with id: " + id));
 

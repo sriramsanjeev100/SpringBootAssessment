@@ -31,7 +31,7 @@ public class SecurityConfig
         return http
                 .csrf(customizer -> customizer.disable())
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/login").permitAll()
+                        .requestMatchers("/login", "/refresh").permitAll()
                         .requestMatchers("/admin").hasRole("ADMIN")
                         .requestMatchers("/user").hasRole("USER")
                         .anyRequest().authenticated())

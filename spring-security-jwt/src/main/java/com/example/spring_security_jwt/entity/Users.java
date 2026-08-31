@@ -2,6 +2,8 @@ package com.example.spring_security_jwt.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Users
@@ -11,16 +13,21 @@ public class Users
     private String username;
     private String password;
 
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    private Role role;
+
     public Users()
     {
 
     }
 
-    public Users(int id, String username, String password)
+    public Users(int id, String username, String password, Role role)
     {
         this.id = id;
         this.username = username;
         this.password = password;
+        this.role = role;
     }
 
     public int getId()
@@ -53,13 +60,13 @@ public class Users
         this.password = password;
     }
 
-    @Override
-    public String toString()
+    public Role getRole()
     {
-        return "Users{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                '}';
+        return role;
+    }
+
+    public void setRole(Role role)
+    {
+        this.role = role;
     }
 }

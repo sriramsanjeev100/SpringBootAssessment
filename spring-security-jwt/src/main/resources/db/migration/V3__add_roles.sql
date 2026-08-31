@@ -1,0 +1,14 @@
+CREATE TABLE role
+(
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(50) NOT NULL UNIQUE
+);
+
+ALTER TABLE users
+ADD COLUMN role_id INT;
+
+ALTER TABLE users
+ADD CONSTRAINT fk_users_role
+FOREIGN KEY (role_id) REFERENCES role(id);
+
+INSERT INTO role (name) VALUES ('USER'),('ADMIN');

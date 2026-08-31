@@ -2,6 +2,7 @@ package com.example.spring_security_jwt.service;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +13,9 @@ import java.util.Date;
 @Service
 public class JwtService
 {
-    private final String secretKey = "myverysecretkeymyverysecretkey123456789";
+    @Value("${jwt.secret-key}")
+    private String secretKey;
+
     public String generateToken(UserDetails userDetails)
     {
         SecretKey key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));

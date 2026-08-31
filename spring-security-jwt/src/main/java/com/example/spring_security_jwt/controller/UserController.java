@@ -1,7 +1,6 @@
 package com.example.spring_security_jwt.controller;
 
 import com.example.spring_security_jwt.dto.LoginRequest;
-import com.example.spring_security_jwt.entity.Users;
 import com.example.spring_security_jwt.service.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;

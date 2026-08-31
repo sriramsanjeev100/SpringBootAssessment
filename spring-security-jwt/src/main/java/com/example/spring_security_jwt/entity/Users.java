@@ -13,6 +13,7 @@ public class Users
 
     public Users()
     {
+
     }
 
     public Users(int id, String username, String password)

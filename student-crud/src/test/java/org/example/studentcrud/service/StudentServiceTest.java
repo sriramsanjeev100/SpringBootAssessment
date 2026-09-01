@@ -13,6 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
@@ -57,9 +58,11 @@ public class StudentServiceTest
         Student savedStudent = new Student(1, "Arya", "arya@gmail.com", "MECH");
         when(studentRepository.save(any(Student.class))).thenReturn(savedStudent);
         Student result = studentService.addStudent(studentDto);
-        assertEquals("Arya", result.getName());
-        assertEquals("arya@gmail.com", result.getEmail());
-        assertEquals("MECH", result.getCourse());
+        assertAll(
+                () -> assertEquals("Arya", result.getName()),
+                () -> assertEquals("arya@gmail.com", result.getEmail()),
+                () -> assertEquals("MECH", result.getCourse())
+        );
         verify(studentRepository).save(any(Student.class));
     }
 
@@ -68,13 +71,15 @@ public class StudentServiceTest
     {
         Student existingStudent = new Student(5, "Shibu", "shibu@gmail.com", "CIVIL");
         StudentDto studentDto = new StudentDto("John", "john@gmail.com", "EEE", null);
-        when(studentRepository.findById(1)).thenReturn(Optional.of(existingStudent));
+        when(studentRepository.findById(5)).thenReturn(Optional.of(existingStudent));
         when(studentRepository.save(existingStudent)).thenReturn(existingStudent);
-        Student result = studentService.updateStudent(1, studentDto);
-        assertEquals("John", result.getName());
-        assertEquals("john@gmail.com", result.getEmail());
-        assertEquals("EEE", result.getCourse());
-        verify(studentRepository).findById(1);
+        Student result = studentService.updateStudent(5, studentDto);
+        assertAll(
+                () -> assertEquals("John", result.getName()),
+                () -> assertEquals("john@gmail.com", result.getEmail()),
+                () -> assertEquals("EEE", result.getCourse())
+        );
+        verify(studentRepository).findById(5);
         verify(studentRepository).save(existingStudent);
     }
 

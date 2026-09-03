@@ -2,14 +2,16 @@ package com.example.job_portal.entity;
 
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Column;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.FetchType;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -18,7 +20,7 @@ import java.util.UUID;
 public class Job
 {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     @Column(nullable = false)
@@ -36,16 +38,16 @@ public class Job
     private Integer experience;
 
     @Column(nullable = false)
-    private LocalDate postedDate;
+    private LocalDateTime postedDate;
 
     @Column(nullable = false)
-    private LocalDate lastDate;
+    private LocalDateTime lastDate;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "employer_id", nullable = false)
     private Employer employer;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "job_skills",
             joinColumns = @JoinColumn(name = "job_id"),
@@ -118,22 +120,22 @@ public class Job
         this.experience = experience;
     }
 
-    public LocalDate getPostedDate()
+    public LocalDateTime getPostedDate()
     {
         return postedDate;
     }
 
-    public void setPostedDate(LocalDate postedDate)
+    public void setPostedDate(LocalDateTime postedDate)
     {
         this.postedDate = postedDate;
     }
 
-    public LocalDate getLastDate()
+    public LocalDateTime getLastDate()
     {
         return lastDate;
     }
 
-    public void setLastDate(LocalDate lastDate)
+    public void setLastDate(LocalDateTime lastDate)
     {
         this.lastDate = lastDate;
     }

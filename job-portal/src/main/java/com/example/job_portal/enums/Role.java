@@ -1,4 +1,4 @@
-package com.example.job_portal.entity;
+package com.example.job_portal.enums;
 
 public enum Role
 {

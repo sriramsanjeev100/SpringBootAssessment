@@ -1,29 +1,39 @@
 package com.example.job_portal.entity;
 
-import jakarta.persistence.*;
+import com.example.job_portal.enums.ApplicationStatus;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.FetchType;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
 public class JobApplication
 {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     @Column(nullable = false)
-    private LocalDate appliedDate;
+    private LocalDateTime appliedDate;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private ApplicationStatus status;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "job_seeker_id", nullable = false)
     private JobSeeker jobSeeker;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "job_id", nullable = false)
     private Job job;
 
@@ -42,12 +52,12 @@ public class JobApplication
         this.id = id;
     }
 
-    public LocalDate getAppliedDate()
+    public LocalDateTime getAppliedDate()
     {
         return appliedDate;
     }
 
-    public void setAppliedDate(LocalDate appliedDate)
+    public void setAppliedDate(LocalDateTime appliedDate)
     {
         this.appliedDate = appliedDate;
     }

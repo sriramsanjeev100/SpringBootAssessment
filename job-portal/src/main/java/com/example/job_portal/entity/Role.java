@@ -3,5 +3,6 @@ package com.example.job_portal.entity;
 public enum Role
 {
     EMPLOYER,
-    JOB_SEEKER
+    JOB_SEEKER,
+    ADMIN
 }

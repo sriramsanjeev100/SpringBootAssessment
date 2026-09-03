@@ -6,16 +6,21 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Column;
+
+import java.util.UUID;
 
 @Entity
 public class Employer
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private UUID id;
 
+    @Column(nullable = false)
     private String companyName;
 
+    @Column(nullable = false)
     private String location;
 
     @OneToOne
@@ -27,12 +32,12 @@ public class Employer
 
     }
 
-    public Integer getId()
+    public UUID getId()
     {
         return id;
     }
 
-    public void setId(Integer id)
+    public void setId(UUID id)
     {
         this.id = id;
     }

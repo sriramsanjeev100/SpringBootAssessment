@@ -1,6 +1,8 @@
 package com.example.job_portal.controller;
 
+import com.example.job_portal.dto.request.LoginRequest;
 import com.example.job_portal.dto.request.RegisterRequest;
+import com.example.job_portal.dto.response.LoginResponse;
 import com.example.job_portal.dto.response.UserResponse;
 import com.example.job_portal.service.UserService;
 import jakarta.validation.Valid;
@@ -25,5 +27,12 @@ public class AuthController
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(response);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest request)
+    {
+        LoginResponse response = userService.login(request);
+        return ResponseEntity.ok(response);
     }
 }

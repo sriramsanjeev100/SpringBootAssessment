@@ -20,10 +20,7 @@ public class EmailService
     {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(user.getEmail());
-        message.setSubject("Welcome to Job Portal");
-        message.setText("Hello " + user.getName());
-        message.setText("Welcome to Job Portal!");
-        message.setText("Your account has been successfully created.");
+        message.setText("Hello " + user.getName() + ",\n\n" +"Welcome to Job Portal!\n\n" +"Your account has been successfully created.\n\n" +"Thank you!");
         mailSender.send(message);
     }
 }

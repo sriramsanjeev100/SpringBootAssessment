@@ -1,5 +1,6 @@
 package com.example.job_portal.service;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,10 +19,23 @@ public class JwtService
     public String generateToken(String email)
     {
         SecretKey key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+
         return Jwts.builder()
                 .subject(email)
                 .issuedAt(new Date())
                 .signWith(key)
                 .compact();
+    }
+
+    public String extractUsername(String token)
+    {
+        SecretKey key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+
+        return Jwts.parser()
+                .verifyWith(key)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload()
+                .getSubject();
     }
 }

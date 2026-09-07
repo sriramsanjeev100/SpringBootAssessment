@@ -11,9 +11,9 @@ import java.util.UUID;
 public interface JobRepository extends JpaRepository<Job, UUID>
 {
     List<Job> findByEmployerId(UUID employerId);
-    List<Job> findByTitle(String title);
-    List<Job> findByLocation(String location);
-    List<Job> findDistinctBySkills(String skill);
+    Page<Job> findByTitle(String title, Pageable pageable);
+    Page<Job> findByLocation(String location, Pageable pageable);
+    Page<Job> findDistinctBySkills(String skill, Pageable pageable);
     List<Job> findAllByOrderByPostedDateDesc();
     List<Job> findByExperience(Integer experience);
     Page<Job> findAll(Pageable pageable);

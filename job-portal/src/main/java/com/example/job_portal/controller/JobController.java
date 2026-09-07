@@ -58,27 +58,21 @@ public class JobController
     }
 
     @GetMapping("/search/title")
-    public ResponseEntity<List<JobResponse>> searchJobsByTitle(@RequestParam String title)
+    public ResponseEntity<Page<JobResponse>> getJobsByTitle(@RequestParam String title, @RequestParam int page, @RequestParam int size)
     {
-        return ResponseEntity.ok(jobService.getJobsByTitle(title));
+        return ResponseEntity.ok(jobService.getJobsByTitle(title, page, size));
     }
 
     @GetMapping("/search/location")
-    public ResponseEntity<List<JobResponse>> searchJobsByLocation(@RequestParam String location)
+    public ResponseEntity<Page<JobResponse>> getJobsByLocation(@RequestParam String location, @RequestParam int page, @RequestParam int size)
     {
-        return ResponseEntity.ok(jobService.getJobsByLocation(location));
+        return ResponseEntity.ok(jobService.getJobsByLocation(location, page, size));
     }
 
     @GetMapping("/search/skill")
-    public ResponseEntity<List<JobResponse>> searchJobsBySkill(@RequestParam String skill)
+    public ResponseEntity<Page<JobResponse>> getJobsBySkill(@RequestParam String skill, @RequestParam int page, @RequestParam int size)
     {
-        return ResponseEntity.ok(jobService.getJobsBySkill(skill));
-    }
-
-    @GetMapping("/recent")
-    public ResponseEntity<List<JobResponse>> getRecentJobs()
-    {
-        return ResponseEntity.ok(jobService.getRecentJobs());
+        return ResponseEntity.ok(jobService.getJobsBySkill(skill, page, size));
     }
 
     @GetMapping("/fresher")

@@ -70,28 +70,25 @@ public class JobService
                 .toList();
     }
 
-    public List<JobResponse> getJobsByTitle(String title)
+    public Page<JobResponse> getJobsByTitle(String title, int page, int size)
     {
-        return jobRepository.findByTitle(title)
-                .stream()
-                .map(this::mapToResponse)
-                .toList();
+        Pageable pageable = PageRequest.of(page, size);
+        return jobRepository.findByTitle(title, pageable)
+                .map(this::mapToResponse);
     }
 
-    public List<JobResponse> getJobsByLocation(String location)
+    public Page<JobResponse> getJobsByLocation(String location, int page, int size)
     {
-        return jobRepository.findByLocation(location)
-                .stream()
-                .map(this::mapToResponse)
-                .toList();
+        Pageable pageable = PageRequest.of(page, size);
+        return jobRepository.findByLocation(location, pageable)
+                .map(this::mapToResponse);
     }
 
-    public List<JobResponse> getJobsBySkill(String skill)
+    public Page<JobResponse> getJobsBySkill(String skill, int page, int size)
     {
-        return jobRepository.findDistinctBySkills(skill)
-                .stream()
-                .map(this::mapToResponse)
-                .toList();
+        Pageable pageable = PageRequest.of(page, size);
+        return jobRepository.findDistinctBySkills(skill, pageable)
+                .map(this::mapToResponse);
     }
 
     public List<JobResponse> getRecentJobs()

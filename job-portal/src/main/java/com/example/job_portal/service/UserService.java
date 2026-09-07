@@ -1,5 +1,6 @@
 package com.example.job_portal.service;
 
+import com.example.job_portal.dto.request.ChangePasswordRequest;
 import com.example.job_portal.dto.request.LoginRequest;
 import com.example.job_portal.dto.request.RegisterRequest;
 import com.example.job_portal.dto.request.UserRequest;
@@ -95,6 +96,20 @@ public class UserService
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         userRepository.delete(user);
+    }
+
+    public void changePassword(UUID id, ChangePasswordRequest request)
+    {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+        if (!passwordEncoder.matches(request.getCurrentPassword(), user.getPassword()))
+        {
+            throw new IllegalArgumentException("Current password is incorrect");
+        }
+
+        user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        userRepository.save(user);
     }
 
     private UserResponse mapToResponse(User user)

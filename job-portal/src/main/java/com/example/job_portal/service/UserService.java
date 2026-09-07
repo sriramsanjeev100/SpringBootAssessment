@@ -6,6 +6,7 @@ import com.example.job_portal.dto.request.RegisterRequest;
 import com.example.job_portal.dto.request.UserRequest;
 import com.example.job_portal.dto.response.LoginResponse;
 import com.example.job_portal.dto.response.UserResponse;
+import com.example.job_portal.entity.RefreshToken;
 import com.example.job_portal.entity.User;
 import com.example.job_portal.exception.EmailAlreadyRegisteredException;
 import com.example.job_portal.exception.ResourceNotFoundException;
@@ -21,19 +22,21 @@ import java.util.UUID;
 @Service
 public class UserService
 {
+    private final JwtService jwtService;
+    private final EmailService emailService;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final EmailService emailService;
+    private final RefreshTokenService refreshTokenService;
     private final AuthenticationManager authenticationManager;
-    private final JwtService jwtService;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, EmailService emailService, AuthenticationManager authenticationManager, JwtService jwtService)
+    public UserService(JwtService jwtService, EmailService emailService, UserRepository userRepository, PasswordEncoder passwordEncoder, RefreshTokenService refreshTokenService, AuthenticationManager authenticationManager)
     {
+        this.jwtService = jwtService;
+        this.emailService = emailService;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
-        this.emailService = emailService;
+        this.refreshTokenService = refreshTokenService;
         this.authenticationManager = authenticationManager;
-        this.jwtService = jwtService;
     }
 
     public UserResponse registerUser(RegisterRequest request)
@@ -57,8 +60,21 @@ public class UserService
     public LoginResponse login(LoginRequest request)
     {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
-        String token = jwtService.generateToken(request.getEmail());
-        return new LoginResponse(token);
+        User user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+        String accessToken = jwtService.generateToken(user.getEmail());
+        RefreshToken refreshToken = refreshTokenService.createRefreshToken(user.getId());
+        return new LoginResponse(accessToken, refreshToken.getToken());
+    }
+
+    public LoginResponse refreshAccessToken(String refreshToken)
+    {
+        RefreshToken token = refreshTokenService.getRefreshToken(refreshToken);
+        refreshTokenService.verifyExpiration(token);
+        User user = token.getUser();
+        String accessToken = jwtService.generateToken(user.getEmail());
+        return new LoginResponse(accessToken, refreshToken);
     }
 
     public List<UserResponse> getAllUsers()
@@ -121,14 +137,5 @@ public class UserService
                 user.getEmail(),
                 user.getRole()
         );
-    }
-
-    private User setUserFields(User user, UserRequest request)
-    {
-        user.setName(request.getName());
-        user.setEmail(request.getEmail());
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setRole(request.getRole());
-        return user;
     }
 }

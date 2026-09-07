@@ -10,7 +10,10 @@ import jakarta.persistence.Column;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.FetchType;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -40,6 +43,12 @@ public class JobSeeker
     )
     private Set<Skill> skills = new HashSet<>();
 
+//    @CreatedDate
+//    private LocalDateTime createdAt;
+//
+//    @LastModifiedDate
+//    private LocalDateTime updatedAt;
+
     public JobSeeker()
     {
 
@@ -48,11 +57,6 @@ public class JobSeeker
     public UUID getId()
     {
         return id;
-    }
-
-    public void setId(UUID id)
-    {
-        this.id = id;
     }
 
     public Integer getExperience()

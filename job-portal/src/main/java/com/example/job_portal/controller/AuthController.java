@@ -1,6 +1,7 @@
 package com.example.job_portal.controller;
 
 import com.example.job_portal.dto.request.LoginRequest;
+import com.example.job_portal.dto.request.RefreshTokenRequest;
 import com.example.job_portal.dto.request.RegisterRequest;
 import com.example.job_portal.dto.response.LoginResponse;
 import com.example.job_portal.dto.response.UserResponse;
@@ -37,5 +38,11 @@ public class AuthController
     {
         LoginResponse response = userService.login(request);
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<LoginResponse> refreshToken(@Valid @RequestBody RefreshTokenRequest request)
+    {
+        return ResponseEntity.ok(userService.refreshAccessToken(request.getRefreshToken()));
     }
 }

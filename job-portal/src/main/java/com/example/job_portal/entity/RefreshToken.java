@@ -1,43 +1,38 @@
 package com.example.job_portal.entity;
 
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Column;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
+
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
-public class Employer
+@Table(name = "refresh_token")
+public class RefreshToken
 {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(nullable = false)
-    private String companyName;
+    @Column(nullable = false, unique = true)
+    private String token;
 
     @Column(nullable = false)
-    private String location;
+    private LocalDateTime expiryDate;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false, unique = true)
     private User user;
 
-//    @CreatedDate
-//    private LocalDateTime createdAt;
-//
-//    @LastModifiedDate
-//    private LocalDateTime updatedAt;
-
-    public Employer()
+    public RefreshToken()
     {
 
     }
@@ -47,24 +42,24 @@ public class Employer
         return id;
     }
 
-    public String getCompanyName()
+    public String getToken()
     {
-        return companyName;
+        return token;
     }
 
-    public void setCompanyName(String companyName)
+    public void setToken(String token)
     {
-        this.companyName = companyName;
+        this.token = token;
     }
 
-    public String getLocation()
+    public LocalDateTime getExpiryDate()
     {
-        return location;
+        return expiryDate;
     }
 
-    public void setLocation(String location)
+    public void setExpiryDate(LocalDateTime expiryDate)
     {
-        this.location = location;
+        this.expiryDate = expiryDate;
     }
 
     public User getUser()

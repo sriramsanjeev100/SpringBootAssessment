@@ -5,7 +5,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -18,6 +21,12 @@ public class Skill
     @Column(nullable = false, unique = true)
     private String name;
 
+//    @CreatedDate
+//    private LocalDateTime createdAt;
+//
+//    @LastModifiedDate
+//    private LocalDateTime updatedAt;
+
     public Skill()
     {
 
@@ -26,11 +35,6 @@ public class Skill
     public UUID getId()
     {
         return id;
-    }
-
-    public void setId(UUID id)
-    {
-        this.id = id;
     }
 
     public String getName()
